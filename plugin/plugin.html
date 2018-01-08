@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+    <head>
+    <meta charset="UTF-8">
+    <title>拖拽</title>
+    <style>
+    *{
+        padding: 0;
+        margin: 0;
+    }
+    body{
+        position: relative;
+    }
+    .dragItem{
+        width: 100px;
+        height: 100px;
+        background: #f00;
+        cursor: pointer;
+        position: absolute;
+        left: 100px;
+        top: 100px;
+        border: 1px solid #000;
+    }
+    .dropArea{
+        width: 400px;
+        height: 400px;
+        background: #ccc;
+        cursor: none;
+        position: absolute;
+        left: 100px;
+        top: 300px;
+        display: flex;
+        justify-content:center;
+        flex-wrap:wrap;
+        overflow: auto;
+    }
+</style>
+</head>
+<body>
+    <div class="dragItem"></div>
+    <div class="dropArea"></div>
+    <script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript" src="js/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="js/dragFitMobile.js"></script>
+    <script>
+    $(function(){
+        //移动窗口的步骤
+        //1、按下鼠标左键
+        //2、移动鼠标
+        var cloneElement = $(".dragItem").clone();
+        init();
+        function init(){
+            $(".dragItem").each(function(index,item){
+                $(item).draggable({
+                    helper: "clone",
+                    containment:$("body"),
+                    revert:"invalid",
+                    opacity:"0.7",
+                    scroll:false,
+                    start:function(event, ui){
+                        /**/
+                    },
+                    drag:function(event, ui){
+                       /**/
+                    },
+                    stop:function(event, ui){
+                       cloneElement = ui.helper[0]
+                    }  
+                });
+            });
+            $(".dropArea").each(function(index,item){
+                $(item).droppable({
+                    drop: function(event, ui) {
+                        $(cloneElement).css({'position':'relative','left':'0','top':'0'})
+                        $(".dropArea").append(cloneElement);
+                    }
+                  });
+            });
+        }
+    });
+    </script>
+</body>
+</html>
